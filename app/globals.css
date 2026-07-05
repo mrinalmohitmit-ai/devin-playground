@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f6f1e8;
+  --foreground: #1f2937;
+  --muted: #efe7db;
+  --muted-foreground: #667085;
+  --card: rgba(255, 255, 255, 0.7);
+  --card-foreground: #111827;
+  --border: rgba(126, 109, 87, 0.18);
+  --accent: rgba(102, 126, 234, 0.08);
+  --accent-foreground: #1d4ed8;
+  --ring: #7c3aed;
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff;
+}
+
+.dark {
+  --background: #0b1020;
+  --foreground: #e5e7eb;
+  --muted: #121a33;
+  --muted-foreground: #a1aabf;
+  --card: rgba(17, 24, 39, 0.72);
+  --card-foreground: #f9fafb;
+  --border: rgba(148, 163, 184, 0.18);
+  --accent: rgba(167, 139, 250, 0.12);
+  --accent-foreground: #c4b5fd;
+  --ring: #a78bfa;
+  --primary: #a78bfa;
+  --primary-foreground: #0b1020;
+}
+
+html {
+  background: var(--background);
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(124, 58, 237, 0.12), transparent 28%),
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.08), transparent 25%),
+    var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--primary) 24%, transparent);
+  color: var(--foreground);
+}
+
+.prose {
+  max-width: 100%;
+}
+
+.prose :where(h1, h2, h3, h4) {
+  font-family: inherit;
+  letter-spacing: -0.02em;
+}
+
+.prose :where(a) {
+  color: var(--primary);
+  text-decoration: none;
+  text-underline-offset: 0.18em;
+}
+
+.prose :where(a:hover) {
+  text-decoration: underline;
+}
+
+.prose :where(code):not(:where(pre code)) {
+  background: rgba(124, 58, 237, 0.08);
+  border-radius: 0.4rem;
+  padding: 0.18rem 0.4rem;
+  font-size: 0.95em;
+}
+
+.prose :where(pre) {
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.96);
+  border-radius: 1.2rem;
+  box-shadow: 0 25px 60px -35px rgba(15, 23, 42, 0.55);
+}
+
+.prose :where(blockquote) {
+  border-left-color: var(--primary);
+  background: color-mix(in srgb, var(--card) 90%, transparent);
+  border-radius: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.prose :where(hr) {
+  border-color: var(--border);
+}
+
+.prose :where(thead th) {
+  color: var(--card-foreground);
+}
+
+* {
+  border-color: var(--border);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
