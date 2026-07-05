@@ -7,6 +7,7 @@ import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
 
 const postsDirectory = path.join(process.cwd(), 'content/posts');
+const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/i;
 
 export type PostFrontmatter = {
   title: string;
@@ -40,6 +41,16 @@ async function markdownToHtml(markdown: string) {
   return file.toString();
 }
 
+async function getKnownPostSlugs() {
+  const fileNames = await fs.readdir(postsDirectory);
+
+  return new Set(
+    fileNames
+      .filter((fileName) => /\.(md|mdx)$/.test(fileName))
+      .map((fileName) => fileName.replace(/\.(md|mdx)$/, '')),
+  );
+}
+
 export async function getAllPosts(): Promise<Post[]> {
   const fileNames = await fs.readdir(postsDirectory);
   const posts = await Promise.all(
@@ -71,6 +82,15 @@ export async function getAllPosts(): Promise<Post[]> {
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
+  if (!slugPattern.test(slug)) {
+    return null;
+  }
+
+  const knownPostSlugs = await getKnownPostSlugs();
+  if (!knownPostSlugs.has(slug)) {
+    return null;
+  }
+
   const possibleFileNames = [`${slug}.md`, `${slug}.mdx`];
   for (const fileName of possibleFileNames) {
     try {
@@ -106,6 +126,7 @@ export async function getAllPostSlugs() {
 
 export function formatDate(dateString: string) {
   return new Intl.DateTimeFormat('en', {
+    timeZone: 'UTC',
     month: 'long',
     day: 'numeric',
     year: 'numeric',
